@@ -1,0 +1,57 @@
+Pokedex - Notes
+---------------
+
+Pokemon Card
+------------
+name + type + image
+
+-------------------
+
+Head
+----
+Bulbasaur + #001
+Types
+image
+
+
+(1) About
+---------
+Species: seed
+Height: 0.70 cm
+Weight: 6.90 kg
+Abilities: Overgrow, Clorophyl
+
+Breeding
+--------
+Gender: male 87.5% female 12.5%
+Egg Groups: Monster
+Egg Cycle: Grass
+
+
+(2) Base Stats
+--------------
+HP 45 Balken
+Attack 60 -
+Defense 48 -
+Sp. Atk 65 -
+Sp. Def 65 -
+Speed 45 -
+Total 317 -
+
+Type defenses
+-------------
+The effectivenes of each type on Charmander
+
+
+(3) Evolutions
+--------------
+in Planung ...
+
+
+(4) Moves
+---------
+in Planung ...
+
+
+
+ChatGPT um deutsche Pokemon-Namen fragen --> Array vorbereiten.
