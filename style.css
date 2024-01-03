@@ -1,0 +1,26 @@
+body {
+    margin: 0;
+    /* Open Sans */
+}
+
+#pokedex {
+    padding: 24px;
+    min-height: 50vh;
+    color: white;
+    background-color: #FB6C6C;
+    /* background-color: #EF5350; */
+    display: flex;
+}
+
+.info-container {
+    margin-top: -40px;
+    min-height: 100px;
+    background-color: white;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+}
+
+img {
+    margin-top: -125px;
+    width: 200px;
+}
