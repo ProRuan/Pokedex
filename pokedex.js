@@ -1,6 +1,7 @@
 let kantodex;
-let register = [];
+let names = [];
 let kantomon = [];
+let pokedex = [];
 
 
 load('kantodex');
@@ -9,11 +10,9 @@ load('pokedex');
 
 async function init() {
     await loadKantodex();
-    getPokeNames();
+    getNames();
     await loadPokemon();
-    await createEntry();
-    await createHead();
-    createId();
+    recordPokemon();
 }
 
 async function loadKantodex() {
@@ -27,17 +26,17 @@ async function loadKantodex() {
 }
 
 
-async function getPokeNames() {
+async function getNames() {
     for (let i = 0; i < kantodex.length; i++) {
         let name = kantodex[i]['name'];
-        register.push(name);
+        names.push(name);
     }
 }
 
 
 async function loadPokemon() {
-    for (let i = 0; i < kantodex.length; i++) {
-        let name = register[i];
+    for (let i = 0; i < names.length; i++) {
+        let name = names[i];
         let url = `https://pokeapi.co/api/v2/pokemon/${name}`;
         let response = await fetch(url);
         let pokemon = await response.json();
@@ -46,41 +45,60 @@ async function loadPokemon() {
 }
 
 
-async function createEntry() {
+function recordPokemon() {
     for (let i = 0; i < kantodex.length; i++) {
         pokedex[i] = {
-            'head': null,
-            'about': null,
-            'base-stat': null,
-            'evolution': null,
-            'moves': null
+            'main': recordMain(i),
+            'about': recordAbout(i),
+            // 'base-stat': recordBaseStat(i),
+            // 'evolution': recordEvolution(i),
+            // 'moves': recordMoves(i)
         };
     }
     save('pokedex', pokedex);
 }
 
 
-async function createHead() {
-    for (let i = 0; i < kantodex.length; i++) {
-        pokedex[i]['head'] = {
-            'id': null,
-            'name': null,
-            'type': null,
-            'image': null
-        }
-    }
-    save('pokedex', pokedex);
+function recordMain(i) {
+    let head = {
+        'id': getKantomonObjectValue(i, 'id'),
+        'name': getKantomonObjectValue(i, 'name'),
+        'types': getKantomonObjectValueDeep(i, 'types', 'type'),
+        'artwork': getKantomonArwork(i, 'sprites')
+    };
+    return head;
 }
 
 
-function createId() {
-    for (let i = 0; i < kantomon.length; i++) {
-        let id = kantomon[i]['id'];
-        pokedex[i]['head']['id'] = id;
-        let name = kantomon[i]['name'];
-        pokedex[i]['head']['name'] = name;
+function getKantomonObjectValue(index, key) {
+    return kantomon[index][key];
+}
+
+
+function getKantomonObjectValueDeep(index, key, subkey) {
+    let master = getKantomonObjectValue(index, key);
+    let slots = [];
+    for (let i = 0; i < master.length; i++) {
+        let primal = master[i][subkey]['name'];
+        slots.push(primal);
     }
-    save('pokedex', pokedex);
+    return slots;
+}
+
+
+function getKantomonArwork(index, key) {
+    let sprites = getKantomonObjectValue(index, key);
+    return sprites['other']['official-artwork']['front_default'];
+}
+
+
+function recordAbout(i) {
+    let about = {
+        'height': getKantomonObjectValue(i, 'height'),
+        'weight': getKantomonObjectValue(i, 'weight'),
+        'abilities': getKantomonObjectValueDeep(i, 'abilities', 'ability')
+    };
+    return about;
 }
 
 
@@ -98,3 +116,8 @@ function load(key) {
         kantomon = JSON.parse(variableAsText);
     }
 }
+
+
+// kantomon --> pokemon
+// think about function names
+// think about save and load
