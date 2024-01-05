@@ -50,8 +50,8 @@ function recordPokemon() {
         pokedex[i] = {
             'main': recordMain(i),
             'about': recordAbout(i),
-            // 'base-stat': recordBaseStat(i),
-            // 'evolution': recordEvolution(i),
+            'base-stat': recordBaseStat(i),
+            'evolution': recordEvolution(i),
             // 'moves': recordMoves(i)
         };
     }
@@ -64,7 +64,7 @@ function recordMain(i) {
         'id': getKantomonObjectValue(i, 'id'),
         'name': getKantomonObjectValue(i, 'name'),
         'types': getKantomonObjectValueDeep(i, 'types', 'type'),
-        'artwork': getKantomonArwork(i, 'sprites')
+        'image': getKantomonArwork(i, 'sprites')
     };
     return head;
 }
@@ -99,6 +99,71 @@ function recordAbout(i) {
         'abilities': getKantomonObjectValueDeep(i, 'abilities', 'ability')
     };
     return about;
+}
+
+
+function recordBaseStat(i) {
+    let stats = getKantomonObjectValue(i, 'stats');
+    let baseStats = {
+        'hp': stats[0]['base_stat'],
+        'attack': stats[1]['base_stat'],
+        'defense': stats[2]['base_stat'],
+        'special-attack': stats[3]['base_stat'],
+        'special-defence': stats[4]['base_stat'],
+        'speed': stats[5]['base_stat']
+    }
+    return baseStats;
+}
+
+
+function getStat(index) {
+    let stats = getKantomonObjectValue(index, 'stats');
+    let baseStats = [];
+    for (let i = 0; i < stats.length; i++) {
+        let stat = getKantomonObjectValue[i, 'base_stat'];
+        baseStats.push(stat);
+    }
+    return baseStats;
+}
+
+
+function recordEvolution(index) {    // funktioniert, aber bitte vereinfachen
+    let beforePrevious = index - 2;
+    let previous = index - 1;
+    let current = index;
+    let next = index + 1;
+    let afterNext = index + 2;
+    indices = [beforePrevious, previous, current, next, afterNext];
+
+    // prepareIndices() + let [beforePrevious, previous, current, next, afterNext] = prepareIndices();
+    // prepareEvolutionCases() + let [caseA, caseB, ...];
+
+    if (evolution[beforePrevious] && evolution[previous]) {
+        return getEvolution(indices, 'double', 'highest');
+    } else if (evolution[previous] && evolution[index]) {
+        return getEvolution(indices, 'double', 'middle');
+    } else if (evolution[index] && evolution[next]) {
+        return getEvolution(indices, 'double', 'lowest');
+    } else if (evolution[previous]) {
+        return getEvolution(indices, 'simple', 'highest');
+    } else if (evolution[index]) {
+        return getEvolution(indices, 'simple', 'lowest');
+    } else {
+        return index;
+    }
+}
+
+
+function getEvolution(indices, occasion, hint) {    // funktioniert, aber bitte vereinfachen
+    let [beforePrevious, previous, current, next, afterNext] = indices;
+    let double = (occasion == 'double');
+    if (hint == 'highest') {
+        return (double) ? [beforePrevious, previous, current] : [previous, current];
+    } else if (hint == 'middle') {
+        return [previous, current, next];
+    } else {
+        return (double) ? [current, next, afterNext] : [current, next];
+    }
 }
 
 
