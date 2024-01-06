@@ -127,7 +127,7 @@ function getStat(index) {
 }
 
 
-function recordEvolution(index) {    // funktioniert, aber bitte vereinfachen
+function recordEvolution(index) {
     let evolutionCases = getEvolutionCases(index);
     let evolutionFamilies = getEvolutionFamilies(index);
     return getFamilyOfThis(index, evolutionCases, evolutionFamilies);
@@ -179,74 +179,72 @@ function getFamilyOfThis(single, members, families) {
 
 
 function recordMoves(index) {
-    let names = getMoves(index);
-    let details = recordDetails(index);
-    let moves = {
-        'names': names,
-        'details': details
+    let version = {
+        'red-blue': getMovesVersion(index, 'red-blue'),
+        'yellow': getMovesVersion(index, 'yellow')
     }
-    return moves;
+    return version;
 }
 
 
-function getMoves(index) {    // see getDetails
-    let names = [];
-    let moves = getKantomonObjectValue(index, 'moves');
+function getMovesVersion(index, key) {
+    let [names, methods, levels] = getVersionDetails(index, key);
+    let version = {
+        'names': names,
+        'methods': methods,
+        'levels': levels
+    }
+    return version;
+}
 
+
+function getVersionDetails(index, key) {    // Bitte vereinfachen!!!
+    let [names, methods, levels] = getVersionParameters();
+    let moves = getKantomonObjectValue(index, 'moves');
+    let namesMethodsLevels = [names, methods, levels];
+    iterateOverMoves(key, moves, namesMethodsLevels);
+    return [names, methods, levels];
+}
+
+
+function getVersionParameters() {
+    let names = [];
+    let methods = [];
+    let levels = [];
+    return [names, methods, levels];
+}
+
+
+function iterateOverMoves(key, moves, namesMethodsLevels) {
     for (let i = 0; i < moves.length; i++) {
         let name = moves[i]['move']['name'];
         let versionGroup = moves[i]['version_group_details'];
-        for (let j = 0; j < versionGroup.length; j++) {
-            let version = versionGroup[j]['version_group']['name'];
-            if (version == 'yellow') {
-                names.push(name);
-            }
-        }
+        let nameVersionGroup = [name, versionGroup];
+        iterateOverVersionGroup(key, namesMethodsLevels, nameVersionGroup);
     }
-
-    // for (let i = 0; i < moves.length; i++) {
-    //     let name = moves[i]['move']['name'];
-    //     names.push(name);
-    // }
-    return names;
 }
 
 
-function recordDetails(index) {
-    let [redBlue, yellow] = getDetails(index);
-    let details = {
-        'red-blue': redBlue,
-        'yellow': yellow
+function iterateOverVersionGroup(key, namesMethodsLevels, nameVersionGroup) {
+    let [name, versionGroup] = nameVersionGroup;
+    for (let j = 0; j < versionGroup.length; j++) {
+        let version = versionGroup[j]['version_group']['name'];
+        let method = versionGroup[j]['move_learn_method']['name'];
+        let level = versionGroup[j]['level_learned_at'];
+        let nameVersionMethodLevel = [name, version, method, level];
+        pushVersionDetails(key, namesMethodsLevels, nameVersionMethodLevel);
     }
-    return details;
 }
 
 
-function getDetails(index) {    // push names
-    let redBlueMethods = [];
-    let redBlueLevels = [];
-    let yellowMethods = [];
-    let yellowLevels = [];
-    let moves = getKantomonObjectValue(index, 'moves');
-    for (let i = 0; i < moves.length; i++) {
-        let versionGroup = moves[i]['version_group_details'];
-        for (let j = 0; j < versionGroup.length; j++) {
-            let version = versionGroup[j]['version_group']['name'];
-            let method = versionGroup[j]['move_learn_method']['name'];
-            let level = versionGroup[j]['level_learned_at'];
-            if (version == 'red-blue') {
-                redBlueMethods.push(method);
-                redBlueLevels.push(level);
-            }
-            if (version == 'yellow') {
-                yellowMethods.push(method);
-                yellowLevels.push(level);
-            }
-        }
+function pushVersionDetails(key, namesMethodsLevels, nameVersionMethodLevel) {
+    let [names, methods, levels] = namesMethodsLevels;
+    let [name, version, method, level] = nameVersionMethodLevel;
+    if (version == key) {
+        names.push(name);
+        methods.push(method);
+        levels.push(level);
     }
-    let redBlue = [redBlueMethods, redBlueLevels];
-    let yellow = [yellowMethods, yellowLevels];
-    return [redBlue, yellow];
 }
 
 
@@ -266,6 +264,17 @@ function load(key) {
 }
 
 
+
+
+// Tasks
+// -----
+// Render TypeColor
+// Also Species?
+// Calculate Total
+
+
+// Clean Coding
+// ------------
 // kantomon --> pokemon
 // think about function names
 // think about save and load
