@@ -268,9 +268,14 @@ function load(key) {
 
 // Tasks
 // -----
-// Render TypeColor
-// Also Species?
-// Calculate Total
+// II. Render TypeColor (HTML)
+// I. Calculate Total (JavaScript)
+
+
+// Options
+// -------
+// Species
+// Evolution Chain
 
 
 // Clean Coding
