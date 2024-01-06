@@ -67,5 +67,27 @@ const evolution = [
     false
 ];
 
+
+const typeColor = {
+    'normal': '#BBBBAA',
+    'fire': '#FF421C',
+    'water': '#2C9BE3',
+    'electric': '#FFDC00',
+    'grass': '#62BC5A',
+    'flying': '#96CAFF',
+    'bug': '#92C12A',
+    'poison': '#9553CD',
+    'rock': '#BBAA66',
+    'ground': '#A67439',
+    'fighting': '#BB5544',
+    'ice': '#74CFC0',
+    'psychic': '#FF6380',
+    'ghost': '#6E4370',
+    'dragon': '#5670BE',
+    'dark': '#4E4545',
+    'steel': '#AAAABB',
+    'fairy': '#EC8FE6'
+}
+
 // option: German names
 // option: more Pokemon
