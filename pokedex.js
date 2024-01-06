@@ -128,42 +128,53 @@ function getStat(index) {
 
 
 function recordEvolution(index) {    // funktioniert, aber bitte vereinfachen
-    let beforePrevious = index - 2;
-    let previous = index - 1;
-    let current = index;
-    let next = index + 1;
-    let afterNext = index + 2;
-    indices = [beforePrevious, previous, current, next, afterNext];
-
-    // prepareIndices() + let [beforePrevious, previous, current, next, afterNext] = prepareIndices();
-    // prepareEvolutionCases() + let [caseA, caseB, ...];
-
-    if (evolution[beforePrevious] && evolution[previous]) {
-        return getEvolution(indices, 'double', 'highest');
-    } else if (evolution[previous] && evolution[index]) {
-        return getEvolution(indices, 'double', 'middle');
-    } else if (evolution[index] && evolution[next]) {
-        return getEvolution(indices, 'double', 'lowest');
-    } else if (evolution[previous]) {
-        return getEvolution(indices, 'simple', 'highest');
-    } else if (evolution[index]) {
-        return getEvolution(indices, 'simple', 'lowest');
-    } else {
-        return index;
-    }
+    let evolutionCases = getEvolutionCases(index);
+    let evolutionFamilies = getEvolutionFamilies(index);
+    return getFamilyOfThis(index, evolutionCases, evolutionFamilies);
 }
 
 
-function getEvolution(indices, occasion, hint) {    // funktioniert, aber bitte vereinfachen
-    let [beforePrevious, previous, current, next, afterNext] = indices;
-    let double = (occasion == 'double');
-    if (hint == 'highest') {
-        return (double) ? [beforePrevious, previous, current] : [previous, current];
-    } else if (hint == 'middle') {
-        return [previous, current, next];
-    } else {
-        return (double) ? [current, next, afterNext] : [current, next];
+function getEvolutionCases(index) {
+    let [beforePrevious, previous, current, next, afterNext] = getIndices(index);
+    let tertiary = evolution[beforePrevious] && evolution[previous];
+    let secondary = evolution[previous] && evolution[current];
+    let primary = evolution[current] && evolution[next];
+    let simple = evolution[previous];
+    let basic = evolution[current];
+    return [tertiary, secondary, primary, simple, basic];
+}
+
+
+function getIndices(index) {
+    let indices = [];
+        for (let i = 0; i < 5; i++) {
+            let id = index + i - 2;
+            indices.push(id)
+        }
+    return indices;
+}
+
+
+function getEvolutionFamilies(index) {
+    let [beforePrevious, previous, current, next, afterNext] = getIndices(index);
+    let familyOfTertiary = [beforePrevious, previous, current];
+    let familyOfSecondary = [previous, current, next];
+    let familyOfPrimary = [current, next, afterNext];
+    let familyOfSimple = [previous, current];
+    let familyOfBasic = [current, next];
+    return [familyOfTertiary, familyOfSecondary, familyOfPrimary, familyOfSimple, familyOfBasic];
+}
+
+
+function getFamilyOfThis(single, members, families) {
+    for (let i = 0; i < 5; i++) {
+        let member = members[i];
+        if (member) {
+            let family = families[i];
+            return family;
+        }
     }
+    return [single];
 }
 
 
