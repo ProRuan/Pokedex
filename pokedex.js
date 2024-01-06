@@ -179,22 +179,74 @@ function getFamilyOfThis(single, members, families) {
 
 
 function recordMoves(index) {
-    let [names] = getMoves(index);
+    let names = getMoves(index);
+    let details = recordDetails(index);
     let moves = {
         'names': names,
+        'details': details
     }
     return moves;
 }
 
 
-function getMoves(index) {
+function getMoves(index) {    // see getDetails
     let names = [];
     let moves = getKantomonObjectValue(index, 'moves');
+
     for (let i = 0; i < moves.length; i++) {
         let name = moves[i]['move']['name'];
-        names.push(name);
+        let versionGroup = moves[i]['version_group_details'];
+        for (let j = 0; j < versionGroup.length; j++) {
+            let version = versionGroup[j]['version_group']['name'];
+            if (version == 'yellow') {
+                names.push(name);
+            }
+        }
     }
-    return [names];
+
+    // for (let i = 0; i < moves.length; i++) {
+    //     let name = moves[i]['move']['name'];
+    //     names.push(name);
+    // }
+    return names;
+}
+
+
+function recordDetails(index) {
+    let [redBlue, yellow] = getDetails(index);
+    let details = {
+        'red-blue': redBlue,
+        'yellow': yellow
+    }
+    return details;
+}
+
+
+function getDetails(index) {    // push names
+    let redBlueMethods = [];
+    let redBlueLevels = [];
+    let yellowMethods = [];
+    let yellowLevels = [];
+    let moves = getKantomonObjectValue(index, 'moves');
+    for (let i = 0; i < moves.length; i++) {
+        let versionGroup = moves[i]['version_group_details'];
+        for (let j = 0; j < versionGroup.length; j++) {
+            let version = versionGroup[j]['version_group']['name'];
+            let method = versionGroup[j]['move_learn_method']['name'];
+            let level = versionGroup[j]['level_learned_at'];
+            if (version == 'red-blue') {
+                redBlueMethods.push(method);
+                redBlueLevels.push(level);
+            }
+            if (version == 'yellow') {
+                yellowMethods.push(method);
+                yellowLevels.push(level);
+            }
+        }
+    }
+    let redBlue = [redBlueMethods, redBlueLevels];
+    let yellow = [yellowMethods, yellowLevels];
+    return [redBlue, yellow];
 }
 
 
