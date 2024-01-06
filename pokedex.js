@@ -52,7 +52,7 @@ function recordPokemon() {
             'about': recordAbout(i),
             'base-stat': recordBaseStat(i),
             'evolution': recordEvolution(i),
-            // 'moves': recordMoves(i)
+            'moves': recordMoves(i)
         };
     }
     save('pokedex', pokedex);
@@ -147,10 +147,10 @@ function getEvolutionCases(index) {
 
 function getIndices(index) {
     let indices = [];
-        for (let i = 0; i < 5; i++) {
-            let id = index + i - 2;
-            indices.push(id)
-        }
+    for (let i = 0; i < 5; i++) {
+        let id = index + i - 2;
+        indices.push(id)
+    }
     return indices;
 }
 
@@ -178,6 +178,26 @@ function getFamilyOfThis(single, members, families) {
 }
 
 
+function recordMoves(index) {
+    let [names] = getMoves(index);
+    let moves = {
+        'names': names,
+    }
+    return moves;
+}
+
+
+function getMoves(index) {
+    let names = [];
+    let moves = getKantomonObjectValue(index, 'moves');
+    for (let i = 0; i < moves.length; i++) {
+        let name = moves[i]['move']['name'];
+        names.push(name);
+    }
+    return [names];
+}
+
+
 function save(key, variable) {
     let variableAsText = JSON.stringify(variable);
     localStorage.setItem(key, variableAsText);
@@ -197,3 +217,4 @@ function load(key) {
 // kantomon --> pokemon
 // think about function names
 // think about save and load
+// use i instead of index
