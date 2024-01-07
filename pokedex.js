@@ -17,6 +17,7 @@ async function init() {
     await loadSpecies();
     recordPokemon();
     getSpecies();
+    // render('overview');
 }
 
 async function loadKantodex() {
@@ -300,7 +301,7 @@ function load(key) {
     } else if (variableAsText && key == 'kantomon') {
         kantomon = JSON.parse(variableAsText);
     } else if (variableAsText && key == 'species') {
-        kantomon = JSON.parse(variableAsText);
+        species = JSON.parse(variableAsText);
     }
 }
 
