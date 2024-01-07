@@ -1,10 +1,12 @@
 let kantodex;
 let names = [];
 let kantomon = [];
+let species = [];    // Bitte bearbeiten
 let pokedex = [];
 
 
 load('kantodex');
+load('species');    // Bitte bearbeiten
 load('pokedex');
 
 
@@ -12,7 +14,9 @@ async function init() {
     await loadKantodex();
     getNames();
     await loadPokemon();
+    await loadSpecies();
     recordPokemon();
+    getSpecies();
 }
 
 async function loadKantodex() {
@@ -45,6 +49,18 @@ async function loadPokemon() {
 }
 
 
+async function loadSpecies() {    // Bitte bearbeiten
+    for (let i = 0; i < 151; i++) {
+        let url = kantomon[i]['species']['url'];
+        let response = await fetch(url);
+        let pokedata = await response.json();
+        let genus = pokedata['genera'][7]['genus'];
+        species.push(genus);
+    }
+    save('species', species);    // load is still missing
+}
+
+
 function recordPokemon() {
     for (let i = 0; i < kantodex.length; i++) {
         pokedex[i] = {
@@ -60,13 +76,13 @@ function recordPokemon() {
 
 
 function recordMain(i) {
-    let head = {
+    let main = {
         'id': getKantomonObjectValue(i, 'id'),
         'name': getKantomonObjectValue(i, 'name'),
         'types': getKantomonObjectValueDeep(i, 'types', 'type'),
         'image': getKantomonArwork(i, 'sprites')
     };
-    return head;
+    return main;
 }
 
 
@@ -94,11 +110,17 @@ function getKantomonArwork(index, key) {
 
 function recordAbout(i) {
     let about = {
+        'species': getSpecies(i),
         'height': getKantomonObjectValue(i, 'height'),
         'weight': getKantomonObjectValue(i, 'weight'),
         'abilities': getKantomonObjectValueDeep(i, 'abilities', 'ability')
     };
     return about;
+}
+
+
+function getSpecies(i) {
+    return species[i];
 }
 
 
@@ -260,6 +282,8 @@ function load(key) {
         kantodex = JSON.parse(variableAsText);
     } else if (variableAsText && key == 'kantomon') {
         kantomon = JSON.parse(variableAsText);
+    } else if (variableAsText && key == 'species') {
+        kantomon = JSON.parse(variableAsText);
     }
 }
 
@@ -274,8 +298,9 @@ function load(key) {
 
 // Options
 // -------
-// Species
-// Evolution Chain
+// About: breeding details
+// Evolution:  evolution chain
+// moves: other versions
 
 
 // Clean Coding
