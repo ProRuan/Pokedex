@@ -66,7 +66,7 @@ function recordPokemon() {
         pokedex[i] = {
             'main': recordMain(i),
             'about': recordAbout(i),
-            'base-stat': recordBaseStat(i),
+            'base-stats': recordBaseStat(i),
             'evolution': recordEvolution(i),
             'moves': recordMoves(i)
         };
@@ -124,28 +124,45 @@ function getSpecies(i) {
 }
 
 
-function recordBaseStat(i) {
-    let stats = getKantomonObjectValue(i, 'stats');
+function recordBaseStat(i) {    // think about object names
     let baseStats = {
-        'hp': stats[0]['base_stat'],
-        'attack': stats[1]['base_stat'],
-        'defense': stats[2]['base_stat'],
-        'special-attack': stats[3]['base_stat'],
-        'special-defence': stats[4]['base_stat'],
-        'speed': stats[5]['base_stat']
+        'hp': getBaseStatsNew(i, 0),
+        'attack': getBaseStatsNew(i, 1),
+        'defense': getBaseStatsNew(i, 2),
+        'special-attack': getBaseStatsNew(i, 3),
+        'special-defence': getBaseStatsNew(i, 4),
+        'speed': getBaseStatsNew(i, 5)
     }
     return baseStats;
 }
 
 
-function getStat(index) {
-    let stats = getKantomonObjectValue(index, 'stats');
-    let baseStats = [];
-    for (let i = 0; i < stats.length; i++) {
-        let stat = getKantomonObjectValue[i, 'base_stat'];
-        baseStats.push(stat);
+function getBaseStat(i, j) {    // opton 1 (not in use)
+    let stats = getJSONObjectValue(kantomon, i, 'stats');
+    let stat = getJSONObjectValue(stats, j, 'base_stat');
+    return stat;
+}
+
+
+function getJSONObjectValue(variable, index, key) {    // opton 1 (not in use)
+    return variable[index][key];
+}
+
+
+function getBaseStatsNew(i, j) {    // opton 2
+    let keys = ['stats', j, 'base_stat'];
+    let stat = getJSONObjectValueDeep(kantomon, i, keys);
+    return stat;
+}
+
+
+function getJSONObjectValueDeep(variable, index, keys) {    // opton 2
+    result = variable[index];
+    for (let i = 0; i < keys.length; i++) {
+        let key = keys[i];
+        result = result[key];
     }
-    return baseStats;
+    return result;
 }
 
 
@@ -309,3 +326,4 @@ function load(key) {
 // think about function names
 // think about save and load
 // use i instead of index
+// use MASTERKEY()
