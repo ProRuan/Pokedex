@@ -17,7 +17,7 @@ async function init() {
     await loadSpecies();
     recordPokemon();
     getSpecies();
-    // render('overview');
+    render('pokecard');
 }
 
 async function loadKantodex() {
