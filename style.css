@@ -1,9 +1,137 @@
 body {
     margin: 0;
-    /* Open Sans */
+
+    /* Bitte lokal speichern */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+
+    background-color: #62BC5A;
 }
 
-/* #pokedex {
+header {
+    padding: 48px 16px 0 16px;
+}
+
+.flex-between-center {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pokecard-header {
+    padding: 24px;
+    height: clac(50vh - 48px);
+    color: white;
+}
+
+#header-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0
+}
+
+#name {
+    margin: 0;
+    font-size: 30px;
+}
+
+#index {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.ta-right {
+    text-align: right;
+}
+
+#types {
+    display: flex;
+    justify-content: flex-start;
+    gap: 8px;
+}
+
+.type {
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: lightgray;
+    border-radius: 100px;
+}
+
+#artwork-frame {
+    margin-bottom: -10vh;
+    display: flex;
+    justify-content: center;
+}
+
+#artwork {
+    width: 75%;
+    object-fit: cover;
+    object-position: center;
+}
+
+#pokecard-body {
+    margin-top: 0;
+    /* Bitte bearbeiten */
+
+    padding: 48px 24px;
+    height: clac(50vh - 96px);
+    font-size: 12px;
+    background-color: white;
+    border-radius: 24px 24px 0 0;
+}
+
+#info-link-bar {
+    padding-bottom: 16px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: space-between;
+}
+
+a {
+    cursor: pointer;
+}
+
+.info-link-active {
+    padding-bottom: 16px;
+    color: black;
+    border-bottom: 2px solid midnightblue;
+}
+
+table {
+    width: 100%;
+    border-spacing: 0;
+}
+
+tr:first-child td {
+    padding: 8px 0;
+}
+
+td {
+    padding: 8px 0;
+}
+
+td:first-child {
+    padding-right: 16px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+td:nth-child(2) {
+    font-weight: bold;
+}
+
+
+
+
+/* body {
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+
+#pokedex {
     padding: 24px;
     min-height: 50vh;
     color: white;

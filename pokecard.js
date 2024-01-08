@@ -42,49 +42,50 @@ function writeHTMLOverview() {
 
 function writeHTMLPokecard() {
     return `
-        <main id="pokecard">
-            <section id="header">
+        <section id="pokecard">
+            <article id="pokecard-header" class="pokecard-header">
                 <div id="header-group">
                     <h1 id="name">Bulbasaur</h1>
-                    <div id="index">#001</div>
-                    <div id="types">
-                        <div id="type-1">Grass</div>
-                        <div id="type-2">Poison</div>
+                    <div id="index" class="ta-right">#001</div>
+                    <div id="types" class="flex-between-center">
+                        <div id="type-1" class="type">Grass</div>
+                        <div id="type-2" class="type">Poison</div>
                     </div>
                 </div>
-                <img id="artwork" src="" alt="bulbasaur">
-            </section>
-            <section id="pokecard-body">
-                <nav id="link-group">
-                    <a id="about">About</a>
-                    <a id="base-stats">Base Stats</a>
-                    <a id="evolution">Evolution</a>
-                    <a id="moves">Moves</a>
+                <div id="artwork-frame">
+                    <img id="artwork" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png" alt="bulbasaur">
+                </div>
+            </article>
+            <article id="pokecard-body">
+                <nav id="info-link-bar">
+                    <a id="about" class="info-link info-link-active">About</a>
+                    <a id="base-stats" class="info-link">Base Stats</a>
+                    <a id="evolution" class="info-link">Evolution</a>
+                    <a id="moves" class="info-link">Moves</a>
                 </nav>
 
                 <!-- rendering link 1, 2, 3 or 4 -->
 
-                <article id="about-content">
-                    <table>
-                        <tr>
-                            <td>Species</td>
-                            <td>Seed</td>
-                        </tr>
-                        <tr>
-                            <td>Height</td>
-                            <td>0.70 m</td>
-                        </tr>
-                        <tr>
-                            <td>Weight</td>
-                            <td>6.90 kg</td>
-                        </tr>
-                        <tr>
-                            <td>Abilities</td>
-                            <td>Overgrow, Clorophyl</td>
-                    </table>
-                </article>
-            </section>
-        </main>
+                <table>
+                    <tr>
+                        <td>Species</td>
+                        <td>Seed</td>
+                    </tr>
+                    <tr>
+                        <td>Height</td>
+                        <td>0.70 m</td>
+                    </tr>
+                    <tr>
+                        <td>Weight</td>
+                        <td>6.90 kg</td>
+                    </tr>
+                    <tr>
+                        <td>Abilities</td>
+                        <td>Overgrow, Clorophyl</td>
+                    </tr>
+                </table>
+            </article>
+        </section>
     `;
 }
 
