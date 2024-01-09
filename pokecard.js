@@ -40,7 +40,7 @@ function renderPokecardCollection() {
     let pokecardCollector = getElement('pokecard-collector');
     pokecardCollector.innerHTML = '';
 
-    for (let i = 0; i < pokedex.length; i++) {
+    for (let i = 0; i < 7; i++) {
         pokecardCollector.innerHTML += `
         ${renderPokecard(i)}
     `;
@@ -186,6 +186,20 @@ function writeHTMLPokecard() {    // section pokecard erforderlich? --> use main
 }
 
 
+function search() {
+    let input = document.getElementById('search').value;
+    let keys = ['main', 'name'];
+    for (let i = 0; i < 7; i++) {
+        let name = getPokedexDeepValue(i, keys);
+        let inputTrue = name.toLowerCase().indexOf(input) > -1;
+        if (inputTrue) {
+            pokedex[i]['search'] = true;
+        } else {
+            pokedex[i]['search'] = false;
+        }
+    }
+    save('pokedex', pokedex);
+}
 
 
 // Option
