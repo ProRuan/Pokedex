@@ -16,31 +16,125 @@ function writeHTML(id) {
         return writeHTMLOverview();
     } else if (id == 'pokecard') {
         return writeHTMLPokecard();
+    } else if (id == 'pokecard-collection') {
+        renderPokecardCollection();
     }
 }
 
 
 function writeHTMLOverview() {
     return `
-        <header>
-            <button>back</button>
-            <button>menu</button>
-        </header>
-        <main id="pokedex">
-            <h1>Pokedex</h1>
-            <section id="pokecard-collector">
-                <!-- rendering pokecards -->
-            </section>
+        <h1 id="pokedex-headline">Pokedex</h1>
+        <section id="pokecard-collector">
+            <!-- rendering pokecards -->
 
             <div style="color: red">Anmerkung: render('overview') --> bitte löschen</div>
 
-        </main>
+        </section>
     `;
 }
 // Please add filter button
 
 
-function writeHTMLPokecard() {
+function renderPokecardCollection() {
+    let pokecardCollector = getElement('pokecard-collector');
+    pokecardCollector.innerHTML = '';
+
+    for (let i = 0; i < 7; i++) {
+        pokecardCollector.innerHTML += `
+        ${renderPokecard(i)}
+    `;
+    }
+}
+
+
+function renderPokecard(i) {
+    return `
+        <div id="pokecard-0" class="pokecard">
+            ${writePokecardId(i)}
+            ${writePokecardName(i)}
+            <div class="pokecard-types">
+                ${writePokecardType(i, 0)}
+                ${writePokecardType(i, 1)}
+            </div>
+            <div class="flex-end">
+                ${writePokecardArtwork(i)}
+            </div>
+        </div>
+    `;
+}
+
+
+function writePokecardId(i) {    // bearbeiten
+    let id = getPokecardId(i);
+    return `<div class="pokecard-index ta-right">${id}</div>`;
+}
+
+
+function getPokecardId(i) {
+    let keys = ['main', 'id'];
+    let id = getPokedexDeepValue(i, keys);
+    return formatPokecardId(id);
+}
+
+
+function getPokedexDeepValue(index, keys) {
+    let value = pokedex[index];
+    for (let i = 0; i < keys.length; i++) {
+        let key = keys[i];
+        value = value[key];
+    }
+    return value;
+}
+
+
+function formatPokecardId(id) {
+    return (id > 99) ? '#' : ((id > 9) ? '#0' : '#00') + id;
+}
+
+
+function writePokecardName(i) {    // bearbeiten
+    let name = getPokecardName(i);
+    return `<h3 class="pokecard-name">${name}</h3>`;
+}
+
+
+function getPokecardName(i) {
+    let keys = ['main', 'name'];
+    let name = getPokedexDeepValue(i, keys);
+    return formatFirstLetter(name);
+}
+
+
+function formatFirstLetter(name) {
+    first = name[0];
+    capital = first.toUpperCase();
+    return name.replace(first, capital);
+}
+
+
+function writePokecardType(i, j) {
+    let keys = ['main', 'types'];
+    let types = getPokedexDeepValue(i, keys);
+    let slot = j < types.length;
+    if (slot) {
+        let color = types[j];
+        let type = formatFirstLetter(color);
+        return `<div class="pokecard-type type-${color}">${type}</div>`;
+    } else {
+        return '';
+    }
+}
+
+
+function writePokecardArtwork(i) {
+    let keys = ['main', 'image'];
+    let image = getPokedexDeepValue(i, keys);
+    return `<img class="pokecard-artwork" src="${image}" alt="bulbasaur">`;
+}
+
+
+function writeHTMLPokecard() {    // section pokecard erforderlich? --> use main from indes.html
     return `
         <section id="pokecard">
             <article id="pokecard-header" class="pokecard-header">

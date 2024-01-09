@@ -18,6 +18,70 @@ header {
     align-items: center;
 }
 
+#pokedex-headline {
+    margin: 0;
+    padding: 24px 16px 0 16px;
+    font-size: 28px;
+}
+
+#pokecard-collector {
+    padding: 24px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.pokecard {
+    padding: 16px 16px 32px 16px;
+    width: calc(100% - 32px);
+    min-height: 143px;
+    color: white;
+    background-color: #4ed1b0;
+    border-radius: 16px;
+    position: relative;
+}
+
+.pokecard-index {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+.pokecard-name {
+    margin: 0 0 16px 0;
+    font-size: 24px;
+}
+
+.pokecard-types {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pokecard-type {
+    padding: 6px 12px;
+    width: min-content;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    background-color: lightgray;
+    border-radius: 100px;
+}
+
+.flex-end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.pokecard-artwork {
+    position: absolute;
+    right: 16px;
+    bottom: 8px;
+    width: 100px;
+    object-fit: cover;
+    object-position: center;
+}
+
 .pokecard-header {
     padding: 24px;
     height: clac(50vh - 48px);
@@ -123,6 +187,77 @@ td:nth-child(2) {
     font-weight: bold;
 }
 
+.type-normal {
+    background-color: #A8A899;
+}
+
+.type-fire {
+    background-color: #E53B19;
+}
+
+.type-water {
+    background-color: #278BCC;
+}
+
+.type-electric {
+    background-color: #E5C600;
+}
+
+.type-grass {
+    background-color: #58A951;
+}
+
+.type-flying {
+    background-color: #87B5E5;
+}
+
+.type-bug {
+    background-color: #83AD25;
+}
+
+.type-poison {
+    background-color: #864AB8;
+}
+
+.type-rock {
+    background-color: #A8995B;
+}
+
+.type-ground {
+    background-color: #956833;
+}
+
+.type-fighting {
+    background-color: #A84C3D;
+}
+
+.type-ice {
+    background-color: #68BAAC;
+}
+
+.type-psychic {
+    background-color: #E55973;
+}
+
+.type-ghost {
+    background-color: #633C64;
+}
+
+.type-dragon {
+    background-color: #4D64AB;
+}
+
+.type-dark {
+    background-color: #463E3E;
+}
+
+.type-steel {
+    background-color: #9999A8;
+}
+
+.type-fairy {
+    background-color: #D480CF;
+}
 
 
 
