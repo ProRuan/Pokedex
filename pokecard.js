@@ -48,11 +48,23 @@ function renderPokecardCollection() {
 }
 
 
+function renderPokecardCollection() {
+    let pokecardCollector = getElement('pokecard-collector');
+    pokecardCollector.innerHTML = '';
+
+    for (let i = 0; i < 7; i++) {
+        pokecardCollector.innerHTML += `
+        ${renderPokecard(i)}
+    `;
+    }
+}
+
+
 function renderPokecard(i) {
     let keys = ['main', 'types', 0];
     let color = getPokedexDeepValue(i, keys);
     return `
-        <div id="pokecard-0" class="pokecard ${color}">
+        <div id="pokecard-0" class="pokecard ${color}" onclick="openDialog(${i})">
             ${writePokecardId(i)}
             ${writePokecardName(i)}
             <div class="pokecard-types">
@@ -132,73 +144,221 @@ function writePokecardType(i, j) {    // Bitte bearbeiten und main bg bearbeiten
 function writePokecardArtwork(i) {
     let keys = ['main', 'image'];
     let image = getPokedexDeepValue(i, keys);
-    return `<img class="pokecard-artwork" src="${image}" alt="bulbasaur">`;
+    return `<img class="pokecard-artwork" src="${image}" alt="artwork">`;
 }
 
 
-function writeHTMLPokecard() {    // section pokecard erforderlich? --> use main from indes.html
+function openDialog(i) {
+    let dialog = getElement('pokecard-cover');
+    dialog.show();
+    let pokecard = getElement('pokecard');
+    pokecard.innerHTML = '';
+    pokecard.innerHTML = writeHTMLPokecard(i);
+}
+
+
+function closeDialog() {
+    let dialog = getElement('pokecard-cover');
+    dialog.close();
+}
+
+
+function stop(event) {
+    event.stopPropagation();
+}
+
+
+function writeHTMLPokecard(i) {    // section pokecard erforderlich? --> use main from indes.html
+    let keys = ['main', 'types', 0];
+    let color = getPokedexDeepValue(i, keys);
     return `
         <section id="pokecard">
-            <article id="pokecard-header" class="pokecard-header">
+            <article id="pokecard-header" class="pokecard-header ${color}">
                 <div id="header-group">
-                    <h1 id="name">Bulbasaur</h1>
-                    <div id="index" class="ta-right">#001</div>
+                    ${writePokecardNameDialog(i)}
+                    ${writePokecardIdDialog(i)}
                     <div id="types" class="flex-between-center">
-                        <div id="type-1" class="type">Grass</div>
-                        <div id="type-2" class="type">Poison</div>
+                        ${writePokecardTypeDialog(i, 0)}
+                        ${writePokecardTypeDialog(i, 1)}
                     </div>
                 </div>
-                <div id="artwork-frame">
-                    <img id="artwork" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png" alt="bulbasaur">
+                <div class="artwork-frame">
+                    ${writePokecardArtworkDialog(i)}
                 </div>
             </article>
             <article id="pokecard-body">
                 <nav id="info-link-bar">
-                    <a id="about" class="info-link info-link-active">About</a>
-                    <a id="base-stats" class="info-link">Base Stats</a>
-                    <a id="evolution" class="info-link">Evolution</a>
-                    <a id="moves" class="info-link">Moves</a>
+                    ${renderPokecardInfoLinks(i)}
                 </nav>
 
-                <!-- rendering link 1, 2, 3 or 4 -->
-
-                <table>
-                    <tr>
-                        <td>Species</td>
-                        <td>Seed</td>
-                    </tr>
-                    <tr>
-                        <td>Height</td>
-                        <td>0.70 m</td>
-                    </tr>
-                    <tr>
-                        <td>Weight</td>
-                        <td>6.90 kg</td>
-                    </tr>
-                    <tr>
-                        <td>Abilities</td>
-                        <td>Overgrow, Clorophyl</td>
-                    </tr>
-                </table>
+                <div id="pokecard-info">
+                    ${renderAbout(i)}
+                </div>
             </article>
         </section>
     `;
 }
 
 
+function writePokecardNameDialog(i) {
+    let name = getPokecardName(i);
+    return `
+        <h1 id="name">${name}</h1>
+    `;
+}
+
+
+function writePokecardIdDialog(i) {
+    let id = getPokecardId(i);
+    return `
+        <div id="index" class="ta-right">${id}</div>
+    `;
+}
+
+
+function writePokecardTypeDialog(i, j) {    // Bitte bearbeiten und main bg bearbeiten!!!
+    let keys = ['main', 'types'];
+    let types = getPokedexDeepValue(i, keys);
+    let slot = j < types.length;
+    if (slot) {
+        let color = types[j];
+        let type = formatFirstLetter(color);
+        return `<div id="type-1" class="type type-${color}">${type}</div>`;
+    } else {
+        return '';
+    }
+}
+
+
+function writePokecardArtworkDialog(i) {
+    let keys = ['main', 'image'];
+    let image = getPokedexDeepValue(i, keys);
+    return `<img class="artwork" src="${image}" alt="artwork">`;
+}
+
+
+function renderPokecardInfoLinks(i) {
+    return `
+        <a id="about" class="info-link info-link-active" onclick="renderPokecardInfo(${i}, id)">About</a>
+        <a id="base-stats" class="info-link" onclick="renderPokecardInfo(${i}, id)">Base Stats</a>
+        <a id="evolution" class="info-link" onclick="renderPokecardInfo(${i}, id)">Evolution</a>
+        <a id="moves" class="info-link" onclick="renderPokecardInfo(${i}, id)">Moves</a>
+    `;
+}
+
+
+function renderPokecardInfo(i, id) {
+    let info = getElement('pokecard-info');
+    info.innerHTML = '';
+    if (id == 'moves') {
+        info.innerHTML = 'moves';
+    } else if (id == 'evolution') {
+        info.innerHTML = 'evolution';
+    } else if (id == 'base-stats') {
+        info.innerHTML = 'base stats';
+    } else if (id == 'about') {
+        info.innerHTML = renderAbout(i);
+    }
+}
+
+
+function renderAbout(i) {
+    return `
+        <table>
+            ${renderSpecies(i)}
+            ${renderHeight(i)}
+            ${renderWeight(i)}
+            ${renderAbilities(i)}
+        </table>
+    `;
+}
+
+
+function renderSpecies(i) {
+    let keys = ['about', 'species'];
+    let species = getPokedexDeepValue(i, keys);
+    return `
+        <tr>
+            <td>Species</td>
+            <td>${species}</td>
+        </tr>
+    `;
+}
+
+
+function renderHeight(i) {
+    let height = formatValue(i, 'height');
+    return `
+        <tr>
+            <td>Species</td>
+            <td>${height} m</td>
+        </tr>
+    `;
+}
+
+
+function formatValue(i, key) {
+    let keys = ['about', key];
+    let integer = getPokedexDeepValue(i, keys);
+    let decimal = integer / 10;
+    return decimal.toFixed(1);
+}
+
+
+function renderWeight(i) {
+    let weight = formatValue(i, 'weight');
+    return `
+        <tr>
+            <td>Species</td>
+            <td>${weight} kg</td>
+        </tr>
+    `;
+}
+
+
+function renderAbilities(i) {    // Bitte bearbeiten + Solar-power!!!
+    let keys = ['about', 'abilities'];
+    let abilities = getPokedexDeepValue(i, keys);
+    let output = [];
+    for (let j = 0; j < abilities.length; j++) {
+        let ability = abilities[j];
+        ability = formatFirstLetter(ability);
+        if (j < 1) {
+            output.push(ability);
+        } else {
+            output.push(' ' + ability);
+        }
+    }
+    return `
+        <tr>
+            <td>Species</td>
+            <td>${output}</td>
+        </tr>
+    `;
+}
+
+
 function search() {
     let input = document.getElementById('search').value;
-    let keys = ['main', 'name'];
-    for (let i = 0; i < 7; i++) {
-        let name = getPokedexDeepValue(i, keys);
-        let inputTrue = name.toLowerCase().indexOf(input) > -1;
-        if (inputTrue) {
-            pokedex[i]['search'] = true;
-        } else {
-            pokedex[i]['search'] = false;
+    let empty = input.length < 1;
+    if (empty) {
+        for (let i = 0; i < pokedex.length; i++) {
+            delete pokedex[i]['search'];
+        }
+    } else {
+        let keys = ['main', 'name'];
+        for (let i = 0; i < 7; i++) {
+            let name = getPokedexDeepValue(i, keys);
+            let inputTrue = name.toLowerCase().indexOf(input) > -1;
+            if (inputTrue) {
+                pokedex[i]['search'] = true;
+            } else {
+                pokedex[i]['search'] = false;
+            }
         }
     }
     save('pokedex', pokedex);
+    renderPokecardCollection();
 }
 
 
