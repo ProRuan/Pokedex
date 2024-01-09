@@ -40,7 +40,7 @@ function renderPokecardCollection() {
     let pokecardCollector = getElement('pokecard-collector');
     pokecardCollector.innerHTML = '';
 
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < pokedex.length; i++) {
         pokecardCollector.innerHTML += `
         ${renderPokecard(i)}
     `;
@@ -49,8 +49,10 @@ function renderPokecardCollection() {
 
 
 function renderPokecard(i) {
+    let keys = ['main', 'types', 0];
+    let color = getPokedexDeepValue(i, keys);
     return `
-        <div id="pokecard-0" class="pokecard">
+        <div id="pokecard-0" class="pokecard ${color}">
             ${writePokecardId(i)}
             ${writePokecardName(i)}
             <div class="pokecard-types">
@@ -89,7 +91,7 @@ function getPokedexDeepValue(index, keys) {
 
 
 function formatPokecardId(id) {
-    return (id > 99) ? '#' : ((id > 9) ? '#0' : '#00') + id;
+    return ((id > 99) ? '#' : ((id > 9) ? '#0' : '#00')) + id;
 }
 
 
@@ -113,7 +115,7 @@ function formatFirstLetter(name) {
 }
 
 
-function writePokecardType(i, j) {
+function writePokecardType(i, j) {    // Bitte bearbeiten und main bg bearbeiten!!!
     let keys = ['main', 'types'];
     let types = getPokedexDeepValue(i, keys);
     let slot = j < types.length;
