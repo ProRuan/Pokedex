@@ -132,7 +132,7 @@ function recordBaseStat(i) {    // think about object names
         'attack': getBaseStatsNew(i, 1),
         'defense': getBaseStatsNew(i, 2),
         'special-attack': getBaseStatsNew(i, 3),
-        'special-defence': getBaseStatsNew(i, 4),
+        'special-defense': getBaseStatsNew(i, 4),
         'speed': getBaseStatsNew(i, 5)
     }
     return baseStats;

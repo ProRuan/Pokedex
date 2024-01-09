@@ -255,7 +255,7 @@ function renderPokecardInfo(i, id) {
     } else if (id == 'evolution') {
         info.innerHTML = 'evolution';
     } else if (id == 'base-stats') {
-        info.innerHTML = 'base stats';
+        info.innerHTML = renderBaseStats(i);
     } else if (id == 'about') {
         info.innerHTML = renderAbout(i);
     }
@@ -333,6 +333,37 @@ function renderAbilities(i) {    // Bitte bearbeiten + Solar-power!!!
         <tr>
             <td>Species</td>
             <td>${output}</td>
+        </tr>
+    `;
+}
+
+
+function renderBaseStats(i) {    // Bitte vereinfachen!!! + css 45 67 aso rendern!!!
+    return `
+        <table>
+            ${renderStat(i, 'hp', 'HP')}
+            ${renderStat(i, 'attack', 'Attack')}
+            ${renderStat(i, 'defense', 'Defense')}
+            ${renderStat(i, 'special-attack', 'Sp. Atk')}
+            ${renderStat(i, 'special-defense', 'Sp. Def')}
+            ${renderStat(i, 'speed', 'Speed')}
+        </table>
+    `
+}
+
+
+function renderStat(i, key, name) {
+    let keys = ['base-stats', key];
+    let stat = getPokedexDeepValue(i, keys);
+    return `
+        <tr>
+            <td>${name}</td>
+            <td>${stat}</td>
+            <td>
+                <div class="total-bar">
+                    <div class="value-bar"></div>
+                </div>
+            <td>
         </tr>
     `;
 }
