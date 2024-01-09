@@ -348,24 +348,53 @@ function renderBaseStats(i) {    // Bitte vereinfachen!!! + css 45 67 aso render
             ${renderStat(i, 'special-defense', 'Sp. Def')}
             ${renderStat(i, 'speed', 'Speed')}
         </table>
-    `
+    `;
 }
 
 
 function renderStat(i, key, name) {
     let keys = ['base-stats', key];
     let stat = getPokedexDeepValue(i, keys);
+    setStatClass(key, stat);
     return `
         <tr>
             <td>${name}</td>
             <td>${stat}</td>
             <td>
                 <div class="total-bar">
-                    <div class="value-bar"></div>
+                    <div class="value-bar ${key}"></div>
                 </div>
             <td>
         </tr>
     `;
+}
+
+
+function setStatClass(key, stat) {
+    let style = getElement('style-collector');
+    let color = setStatClassColor(stat);
+    if (key == 'hp') {
+        style.innerHTML = '';
+    }
+    style.innerHTML += `
+        <style id="${key}">
+            .${key} {
+                width: ${stat}px;
+                background-color: ${color};
+            }
+        </style>
+    `;
+}
+
+
+function setStatClassColor(stat) {
+    let color = 'transparent';
+    if (stat > 49) {
+        color = '#5EC788';
+    } else {
+        color = '#FB7878';
+    }
+    return color;
 }
 
 

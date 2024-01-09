@@ -207,15 +207,15 @@ dialog[open] {
 }
 
 .total-bar {
-    width: 100px;
+    width: 160px;
     height: 4px;
     background-color: lightgray;
+    border-radius: 100px;
 }
 
 .value-bar {
-    width: 45px;
     height: 4px;
-    background-color: lightcoral;
+    border-radius: 100px;
 }
 
 
