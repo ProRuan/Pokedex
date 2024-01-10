@@ -48,20 +48,54 @@ function writeHTMLOverview() {
 // }
 
 
+// function renderPokecardCollection() {
+//     let pokecardCollector = getElement('pokecard-collector');
+//     pokecardCollector.innerHTML = '';
+
+//     for (let i = 0; i < pokedex.length; i++) {
+//         pokecardCollector.innerHTML += `
+//         ${renderOrFilterPokecard(i)}
+//     `;
+//     }
+// }
+
+
 function renderPokecardCollection() {
     let pokecardCollector = getElement('pokecard-collector');
     pokecardCollector.innerHTML = '';
 
     for (let i = 0; i < pokedex.length; i++) {
         pokecardCollector.innerHTML += `
-        ${renderOrFilterPokecard(i)}
+        ${searchRenderFilterPokecard(i)}
     `;
     }
 }
 
 
-let filter = ['dragon'];    // menu + buttons fehlt
-let byFirst = true;    // button fehlt
+function searchRenderFilterPokecard(i) {
+    let input = document.getElementById('search').value;
+    let enabled = input.length > 0;
+    return (enabled) ? searchPokecard(i) : renderOrFilterPokecard(i);
+}
+
+
+function searchPokecard(i) {
+    let keys = ['main', 'name'];
+    let name = getPokedexDeepValue(i, keys);
+    let input = document.getElementById('search').value;
+    // console.log(isNaN(input));    // [main, name] or [main, id]
+    input = input.toLowerCase();
+    let fraction = '';
+    for (let l = 0; l < input.length; l++) {
+        fraction += name[l];
+    }
+    let match = fraction == input;
+    return (match) ? renderPokecard(i) : '';
+}
+
+
+let filter = [];    // menu + buttons fehlt
+let byFirst = false;    // button fehlt
 let onlyPure = false;    // button fehlt
 
 function renderOrFilterPokecard(i) {
@@ -567,7 +601,7 @@ function renderMovesTableRow(i) {
     let names = getPokedexDeepValue(i, keys);
     keys = ['moves', 'red-blue', 'levels'];
     let levels = getPokedexDeepValue(i, keys);
-    
+
     [levels, names, methods] = sortByLevel(levels, names, methods);
     // alert(levels);
     // alert(names);
