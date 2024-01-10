@@ -61,6 +61,7 @@ function renderPokecardCollection() {
 
 
 let filter = [];    // Bitte bearbeiten!!! + filter menu / button einfuegen!!!
+                    // filter first type + filter pure type
 
 function filterPokecard(i) {    // Bitte vereinfachen!!!
     let pokecard;
@@ -378,6 +379,7 @@ function renderBaseStats(i) {    // Bitte vereinfachen!!! + css 45 67 aso render
             ${renderStat(i, 'special-attack', 'Sp. Atk')}
             ${renderStat(i, 'special-defense', 'Sp. Def')}
             ${renderStat(i, 'speed', 'Speed')}
+            ${renderStatTotal(i, 'total', 'Total')}
         </table>
     `;
 }
@@ -426,6 +428,38 @@ function setStatClassColor(stat) {
         color = '#FB7878';
     }
     return color;
+}
+
+
+function renderStatTotal(i, key, title) {
+    let total = calculateStatTotal(i);
+    let scaled = total / 720 * 160;
+    setStatClass('total', scaled);
+    return `
+        <tr>
+            <td>${title}</td>
+            <td>${total}</td>
+            <td>
+                <div class="total-bar">
+                    <div class="value-bar ${key}"></div>
+                </div>
+            <td>
+        </tr>
+    `;
+}
+
+
+function calculateStatTotal(i) {
+    let keys = ['base-stats'];
+    let stats = getPokedexDeepValue(i, keys);
+    let subkeys = ['hp', 'attack', 'defense', 'special-attack', 'special-defense', 'speed'];
+    let total = 0;
+    for (let j = 0; j < subkeys.length; j++) {
+        let subkey = subkeys[j];
+        let stat = stats[subkey];
+        total += stat;
+    }
+    return total;
 }
 
 
