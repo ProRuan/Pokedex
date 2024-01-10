@@ -232,6 +232,13 @@ dialog[open] {
     gap: 8px;
 }
 
+.ta-left {
+    text-align: left;
+}
+
+.mt-24 {
+    margin-top: 24px;
+}
 
 /* body {
     margin: 0;

@@ -288,7 +288,7 @@ function renderPokecardInfo(i, id) {
     let info = getElement('pokecard-info');
     info.innerHTML = '';
     if (id == 'moves') {
-        info.innerHTML = 'moves';
+        info.innerHTML = renderMoves(i);
     } else if (id == 'evolution') {
         info.innerHTML = renderEvolution(i);
     } else if (id == 'base-stats') {
@@ -491,16 +491,103 @@ function renderEvolutionChain(chain) {
 function renderChainLink(link) {
     let keys = ['main', `image`];
     let artwork = getPokedexDeepValue(link, keys);
-    // render id
-    let id = getPokecardId(1);
-    // render name
-    let name = getPokecardName(1);
+    let id = getPokecardId(link);
+    let name = getPokecardName(link);
     return `
         <div class="flex-column-center">
             <img class="evolution-chain" src="${artwork}"></img>
             <div>${id} ${name}</div>
         </div>
     `;
+}
+
+
+function renderMoves(i) {
+    return `
+        <table>
+            <caption>
+                <th class="ta-left">Name</th>
+                <th class="ta-left">Level</th>
+            </caption>
+            ${renderMovesTableRow(i)}
+        </table>
+
+        <div class="mt-24">Please note: Version Red & Version Blue</div>
+    `;
+}
+
+
+function renderMovesTableRow(i) {
+    let keys = ['moves', 'red-blue', 'methods'];
+    let methods = getPokedexDeepValue(i, keys);
+    keys = ['moves', 'red-blue', 'names'];
+    let names = getPokedexDeepValue(i, keys);
+    keys = ['moves', 'red-blue', 'levels'];
+    let levels = getPokedexDeepValue(i, keys);
+    
+    [levels, names, methods] = sortByLevel(levels, names, methods);
+    // alert(levels);
+    // alert(names);
+    // alert(methods);
+
+
+    let moveRow = '';
+
+    for (let j = 0; j < methods.length; j++) {
+        let method = methods[j];
+        let byLevelUp = method == 'level-up';
+        if (byLevelUp) {
+            let name = names[j];
+            let level = levels[j];
+
+            let moveData = `
+                <tr>
+                    <td>${name}</td>
+                    <td>${level}</td>
+                </tr>
+            `;
+            moveRow += moveData;
+        }
+    }
+
+    return moveRow;
+}
+
+
+function sortByLevel(levels, names, methods) {
+    // let levels = [7, 5, 6, 3, 4, 1, 2];
+    let copy = [];
+    for (let j = 0; j < levels.length; j++) {
+        let level = levels[j];
+        copy.push(level);
+    }
+    levels = [];
+    let renamed = [];
+    let remthods = [];
+
+
+
+    for (let k = 0; k < copy.length; k++) {
+        let min = 100;
+        let index = -1;
+        let name = 'n';
+        let method = 'm';
+        for (let j = 0; j < copy.length; j++) {
+            let level = copy[j];
+            if (level < min && level > -1) {
+                min = level;
+                name = names[j];
+                method = methods[j];
+                index = j;
+            }
+        }
+        levels.push(min);
+        renamed.push(name);
+        remthods.push(method);
+        copy[index] = -1;
+    }
+    return [levels, renamed, remthods];
+    // alert(levels);
 }
 
 
@@ -530,7 +617,11 @@ function search() {
 
 // Option
 // render Pokeball svg
+// render moves version yellow
+// render more moves details
 
 // Tasks
+// check pokecard content
 // special names are not working (&female)
 // evolution for is not working for eevee's evolution family
+// color current link
