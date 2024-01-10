@@ -124,6 +124,11 @@ function getPokecardId(i) {
 }
 
 
+function getPokedexValue(index, key) {
+    return pokedex[index][key];
+}
+
+
 function getPokedexDeepValue(index, keys) {
     let value = pokedex[index];
     for (let i = 0; i < keys.length; i++) {
@@ -285,7 +290,7 @@ function renderPokecardInfo(i, id) {
     if (id == 'moves') {
         info.innerHTML = 'moves';
     } else if (id == 'evolution') {
-        info.innerHTML = 'evolution';
+        info.innerHTML = renderEvolution(i);
     } else if (id == 'base-stats') {
         info.innerHTML = renderBaseStats(i);
     } else if (id == 'about') {
@@ -431,7 +436,7 @@ function setStatClassColor(stat) {
 }
 
 
-function renderStatTotal(i, key, title) {
+function renderStatTotal(i, key, title) {    // Please style the base stats table
     let total = calculateStatTotal(i);
     let scaled = total / 720 * 160;
     setStatClass('total', scaled);
@@ -460,6 +465,22 @@ function calculateStatTotal(i) {
         total += stat;
     }
     return total;
+}
+
+
+function renderEvolution(i) {
+    let keys = ['main', `image`];
+    let image = getPokedexDeepValue(0, keys);
+    let chain = getPokedexValue(i, 'evolution');
+    let zero = chain[0];
+    return `
+        <div>
+            <div>
+                <div>${zero}</div>
+                <img src="${image}">
+            </div>
+        </div>
+    `;
 }
 
 
