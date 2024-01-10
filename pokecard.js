@@ -36,27 +36,58 @@ function writeHTMLOverview() {
 // Please add filter button
 
 
+// function renderPokecardCollection() {
+//     let pokecardCollector = getElement('pokecard-collector');
+//     pokecardCollector.innerHTML = '';
+
+//     for (let i = 0; i < 7; i++) {
+//         pokecardCollector.innerHTML += `
+//         ${renderPokecard(i)}
+//     `;
+//     }
+// }
+
+
 function renderPokecardCollection() {
     let pokecardCollector = getElement('pokecard-collector');
     pokecardCollector.innerHTML = '';
 
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < pokedex.length; i++) {
         pokecardCollector.innerHTML += `
-        ${renderPokecard(i)}
+        ${filterPokecard(i)}
     `;
     }
 }
 
 
-function renderPokecardCollection() {
-    let pokecardCollector = getElement('pokecard-collector');
-    pokecardCollector.innerHTML = '';
+let filter = [];    // Bitte bearbeiten!!! + filter menu / button einfuegen!!!
 
-    for (let i = 0; i < 7; i++) {
-        pokecardCollector.innerHTML += `
-        ${renderPokecard(i)}
-    `;
+function filterPokecard(i) {    // Bitte vereinfachen!!!
+    let pokecard;
+    let keys = ['main', 'types'];
+    let types = getPokedexDeepValue(i, keys);
+    if (filter.length > 0) {
+        for (let j = 0; j < types.length; j++) {
+            let type = types[j];
+            let match;
+            for (let k = 0; k < filter.length; k++) {
+                match = type == filter[k];
+                if (match) {
+                    // pokecard = renderPokecard(i);
+                    break;
+                }
+            }
+            if (match) {
+                pokecard = renderPokecard(i);
+                break;
+            } else {
+                pokecard = '';
+            }
+        }
+    } else {
+        pokecard = renderPokecard(i);
     }
+    return pokecard;
 }
 
 
@@ -352,13 +383,13 @@ function renderBaseStats(i) {    // Bitte vereinfachen!!! + css 45 67 aso render
 }
 
 
-function renderStat(i, key, name) {
+function renderStat(i, key, title) {
     let keys = ['base-stats', key];
     let stat = getPokedexDeepValue(i, keys);
     setStatClass(key, stat);
     return `
         <tr>
-            <td>${name}</td>
+            <td>${title}</td>
             <td>${stat}</td>
             <td>
                 <div class="total-bar">
