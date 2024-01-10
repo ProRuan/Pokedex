@@ -54,41 +54,84 @@ function renderPokecardCollection() {
 
     for (let i = 0; i < pokedex.length; i++) {
         pokecardCollector.innerHTML += `
-        ${filterPokecard(i)}
+        ${renderOrFilterPokecard(i)}
     `;
     }
 }
 
 
-let filter = [];    // Bitte bearbeiten!!! + filter menu / button einfuegen!!!
-// filter first type + filter pure type
+let filter = ['dragon'];    // menu + buttons fehlt
+let byFirst = true;    // button fehlt
+let onlyPure = false;    // button fehlt
 
-function filterPokecard(i) {    // Bitte vereinfachen!!!
-    let pokecard;
+function renderOrFilterPokecard(i) {
+    let empty = filter.length < 1;
+    return (empty) ? renderPokecard(i) : filterOnlyPureOrByFirst(i);
+}
+
+
+function filterOnlyPureOrByFirst(i) {
+    return (onlyPure) ? filterPokecardOnlyPure(i) : filterByFirstOrDefault(i);
+}
+
+
+function filterPokecardOnlyPure(i) {
     let keys = ['main', 'types'];
     let types = getPokedexDeepValue(i, keys);
-    if (filter.length > 0) {
-        for (let j = 0; j < types.length; j++) {
-            let type = types[j];
-            let match;
-            for (let k = 0; k < filter.length; k++) {
-                match = type == filter[k];
-                if (match) {
-                    // pokecard = renderPokecard(i);
-                    break;
-                }
-            }
+    let pure = types.length < 2;
+    if (pure) {
+        let type = types[0];
+        let match = false;
+        for (let f = 0; f < filter.length; f++) {
+            match = type == filter[f];
             if (match) {
-                pokecard = renderPokecard(i);
                 break;
-            } else {
-                pokecard = '';
             }
         }
+        return (match) ? renderPokecard(i) : '';
     } else {
-        pokecard = renderPokecard(i);
+        return '';
     }
-    return pokecard;
+}
+
+
+function filterByFirstOrDefault(i) {
+    return (byFirst) ? filterPokecardByFirst(i) : filterPokecard(i);
+}
+
+
+function filterPokecardByFirst(i) {
+    let keys = ['main', 'types'];
+    let types = getPokedexDeepValue(i, keys);
+    let type = types[0];
+    let match = false;
+    for (let f = 0; f < filter.length; f++) {
+        match = type == filter[f];
+        if (match) {
+            break;
+        }
+    }
+    return (match) ? renderPokecard(i) : '';
+}
+
+
+function filterPokecard(i) {
+    let keys = ['main', 'types'];
+    let types = getPokedexDeepValue(i, keys);
+    let match = false;
+    for (let t = 0; t < types.length; t++) {
+        let type = types[t];
+        for (let f = 0; f < filter.length; f++) {
+            match = type == filter[f];
+            if (match) {
+                break;
+            }
+        }
+        if (match) {
+            break;
+        }
+    }
+    return (match) ? renderPokecard(i) : '';
 }
 
 
