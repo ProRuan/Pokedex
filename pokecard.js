@@ -61,7 +61,7 @@ function renderPokecardCollection() {
 
 
 let filter = [];    // Bitte bearbeiten!!! + filter menu / button einfuegen!!!
-                    // filter first type + filter pure type
+// filter first type + filter pure type
 
 function filterPokecard(i) {    // Bitte vereinfachen!!!
     let pokecard;
@@ -469,16 +469,36 @@ function calculateStatTotal(i) {
 
 
 function renderEvolution(i) {
-    let keys = ['main', `image`];
-    let image = getPokedexDeepValue(0, keys);
     let chain = getPokedexValue(i, 'evolution');
-    let zero = chain[0];
     return `
-        <div>
-            <div>
-                <div>${zero}</div>
-                <img src="${image}">
-            </div>
+        <div class="flex-between-center">
+            ${renderEvolutionChain(chain)}
+        </div>
+    `;
+}
+
+
+function renderEvolutionChain(chain) {
+    let artworks = '';
+    for (let i = 0; i < chain.length; i++) {
+        let link = chain[i];
+        artworks += renderChainLink(link);
+    }
+    return artworks;
+}
+
+
+function renderChainLink(link) {
+    let keys = ['main', `image`];
+    let artwork = getPokedexDeepValue(link, keys);
+    // render id
+    let id = getPokecardId(1);
+    // render name
+    let name = getPokecardName(1);
+    return `
+        <div class="flex-column-center">
+            <img class="evolution-chain" src="${artwork}"></img>
+            <div>${id} ${name}</div>
         </div>
     `;
 }
@@ -510,3 +530,7 @@ function search() {
 
 // Option
 // render Pokeball svg
+
+// Tasks
+// special names are not working (&female)
+// evolution for is not working for eevee's evolution family
