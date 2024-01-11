@@ -80,18 +80,39 @@ function searchRenderFilterPokecard(i) {
 
 
 function searchPokecard(i) {
-    let keys = ['main', 'name'];
-    let name = getPokedexDeepValue(i, keys);
     let input = document.getElementById('search').value;
-    // console.log(isNaN(input));    // [main, name] or [main, id]
-    input = input.toLowerCase();
-    let fraction = '';
-    for (let l = 0; l < input.length; l++) {
-        fraction += name[l];
+    let nan = isNaN(input);
+    let subkey;
+    if (nan) {
+        subkey = 'name';
+        input = input.toLowerCase();
+    } else {
+        subkey = 'id';
     }
-    let match = fraction == input;
+    let keys = ['main', subkey];
+    let value = getPokedexDeepValue(i, keys);
+    // value = value.toString();    // case 'id'
+    let fraction = '';
+    for (let j = 0; j < input.length; j++) {
+        fraction += value[j];
+    }
+    let match = fraction == input;    // case 'id': ... && fraction.length == value.length
     return (match) ? renderPokecard(i) : '';
 }
+
+
+// function searchPokecard(i) {
+//     let keys = ['main', 'name'];
+//     let name = getPokedexDeepValue(i, keys);
+//     let input = document.getElementById('search').value;
+//     input = input.toLowerCase();
+//     let fraction = '';
+//     for (let l = 0; l < input.length; l++) {
+//         fraction += name[l];
+//     }
+//     let match = fraction == input;
+//     return (match) ? renderPokecard(i) : '';
+// }
 
 
 let filter = [];    // menu + buttons fehlt
