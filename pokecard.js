@@ -81,38 +81,31 @@ function searchRenderFilterPokecard(i) {
 
 function searchPokecard(i) {
     let input = document.getElementById('search').value;
-    let nan = isNaN(input);
-    let subkey;
-    if (nan) {
-        subkey = 'name';
-        input = input.toLowerCase();
-    } else {
-        subkey = 'id';
-    }
-    let keys = ['main', subkey];
-    let value = getPokedexDeepValue(i, keys);
-    // value = value.toString();    // case 'id'
+    let modus = isNaN(input);
+    return (modus) ? searchPokecardByName(i, input) : searchPokecardById(i, input);
+}
+
+
+function searchPokecardByName(i, input) {
+    input = input.toLowerCase();
+    let keys = ['main', 'name'];
+    let name = getPokedexDeepValue(i, keys);
     let fraction = '';
     for (let j = 0; j < input.length; j++) {
-        fraction += value[j];
+        fraction += name[j];
     }
-    let match = fraction == input;    // case 'id': ... && fraction.length == value.length
+    let match = fraction == input;
     return (match) ? renderPokecard(i) : '';
 }
 
 
-// function searchPokecard(i) {
-//     let keys = ['main', 'name'];
-//     let name = getPokedexDeepValue(i, keys);
-//     let input = document.getElementById('search').value;
-//     input = input.toLowerCase();
-//     let fraction = '';
-//     for (let l = 0; l < input.length; l++) {
-//         fraction += name[l];
-//     }
-//     let match = fraction == input;
-//     return (match) ? renderPokecard(i) : '';
-// }
+function searchPokecardById(i, input) {
+    input = Number(input);
+    let keys = ['main', 'id'];
+    let id = getPokedexDeepValue(i, keys);
+    let match = input == id;
+    return (match) ? renderPokecard(i) : '';
+}
 
 
 let filter = [];    // menu + buttons fehlt
